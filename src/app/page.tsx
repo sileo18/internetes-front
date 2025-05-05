@@ -1,6 +1,9 @@
 "use client";
 import Link from "next/link";
 import SearchComponent from "./components/SearchComponent";
+import MailIcon from '@mui/icons-material/Mail';
+import InfoIcon from '@mui/icons-material/Info';
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 export default function Home() {
   return (
@@ -31,6 +34,24 @@ export default function Home() {
           </Link>.
         </p>
       </main>
+
+      <footer className="bg-[#8B5CF6] text-gray-300 py-4">
+        <div className="flex justify-center space-x-8">
+          <Link href="/contato" className="hover:underline hover:text-gray-100 transition-colors duration-100 flex gap-1">
+            Contato
+            <MailIcon />
+          </Link>
+
+          <Link href="/sobre" className="hover:underline hover:text-gray-100 transition-colors duration-100 flex gap-1">
+            Sobre
+            <InfoIcon />
+          </Link>
+          <Link href="https://github.com/seu-usuario" target="_blank" className="hover:underline hover:text-gray-100 transition-colors duration-100 flex gap-1">
+            GitHub
+            <GitHubIcon />
+          </Link>
+        </div>
+      </footer>
     </div>
   );
 }

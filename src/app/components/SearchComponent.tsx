@@ -57,7 +57,7 @@ function SearchComponent() {
       {results.length > 0 && (
         <ul className="mt-4 bg-white border border-gray-200 rounded-md shadow">
           {results.map((item) => (
-            <li key={item.id} className="px-4 py-2 hover:bg-gray-100">
+            <li key={item.id} className="rounded-xl px-4 py-2 hover:bg-gray-100 transition-colors duration-100 cursor-pointer">
               <strong>{item.term}</strong>: {item.definition}
             </li>
           ))}
