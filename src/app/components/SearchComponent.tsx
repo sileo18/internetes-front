@@ -1,8 +1,18 @@
 import { useState, useEffect } from 'react';
 
+
+interface SearchResult {
+    id: string; 
+    term: string;
+    definition: string;
+    partOfSpeech: string;
+    example: string[];
+    synonyms: string[];
+  }
+
 function SearchComponent() {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState([]);
+  const [results, setResults] = useState<SearchResult[]>([]);
 
   useEffect(() => {
     // Função para buscar os dados da API
@@ -17,7 +27,7 @@ function SearchComponent() {
         if (!response.ok) {
           throw new Error('Erro na requisição');
         }
-        const data = await response.json();
+        const data: SearchResult[] = await response.json();
         setResults(data);
       } catch (error) {
         console.error('Erro ao buscar dados:', error);
