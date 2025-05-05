@@ -1,6 +1,6 @@
 # Internetes - Dicionário Moderno
 
-![Imagem do Frontend](![image](https://github.com/user-attachments/assets/72fb1c8e-dcfe-454e-9644-b57a98b5075f)
+(![image](https://github.com/user-attachments/assets/72fb1c8e-dcfe-454e-9644-b57a98b5075f)
 )
 
 ## 📖 Sobre
