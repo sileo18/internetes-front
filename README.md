@@ -1,6 +1,7 @@
 # Internetes - Dicionário Moderno
 
-![Imagem do Frontend](URL_DA_IMAGEM)
+![Imagem do Frontend](![image](https://github.com/user-attachments/assets/72fb1c8e-dcfe-454e-9644-b57a98b5075f)
+)
 
 ## 📖 Sobre
 
@@ -14,6 +15,6 @@ O **Internetes** é uma aplicação web que funciona como um dicionário moderno
 
 ## 🔧 Tecnologias Utilizadas
 
-- **Frontend**: React (ou outra biblioteca de sua escolha)
-- **Backend**: API em Spring
-- **Banco de Dados**: (Especifique o banco de dados, se aplicável)
+- **Frontend**: NextJS + Tailwind
+- **Backend**: API em Spring 
+- **Banco de Dados**: PostgreSQL
