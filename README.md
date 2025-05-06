@@ -1,7 +1,6 @@
 # Internetes - Dicionário Moderno
 
-![Imagem do Frontend](URL_DA_IMAGEM)
-
+![image](https://github.com/user-attachments/assets/72fb1c8e-dcfe-454e-9644-b57a98b5075f)
 ## 📖 Sobre
 
 O **Internetes** é uma aplicação web que funciona como um dicionário moderno, focada em termos populares da internet e das redes sociais. Seu objetivo é facilitar o entendimento de palavras e expressões comuns no vocabulário online, ajudando as pessoas a se comunicarem melhor em ambientes digitais.
@@ -14,6 +13,6 @@ O **Internetes** é uma aplicação web que funciona como um dicionário moderno
 
 ## 🔧 Tecnologias Utilizadas
 
-- **Frontend**: React (ou outra biblioteca de sua escolha)
-- **Backend**: API em Spring
-- **Banco de Dados**: (Especifique o banco de dados, se aplicável)
+- **Frontend**: NextJS + Tailwind
+- **Backend**: API em Spring  -- Repositório: https://github.com/sileo18/internetes-api
+- **Banco de Dados**: PostgreSQL
