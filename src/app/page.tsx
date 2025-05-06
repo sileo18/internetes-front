@@ -35,7 +35,7 @@ export default function Home() {
         </p>
       </main>
 
-      <footer className="bg-[#8B5CF6] text-gray-300 py-4">
+      <footer className="bg-[#8B5CF6] text-gray-200 py-4">
         <div className="flex justify-center space-x-8">
           <Link href="/contato" className="hover:underline hover:text-gray-100 transition-colors duration-100 flex gap-1">
             Contato
