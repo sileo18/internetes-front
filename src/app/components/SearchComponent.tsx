@@ -1,21 +1,20 @@
 import { useState, useEffect } from 'react';
-
+import Link from 'next/link';
 
 interface SearchResult {
-    id: string; 
-    term: string;
-    definition: string;
-    partOfSpeech: string;
-    example: string[];
-    synonyms: string[];
-  }
+  id: string;
+  term: string;
+  definition: string;
+  partOfSpeech: string;
+  example: string[];
+  synonyms: string[];
+}
 
 function SearchComponent() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
 
   useEffect(() => {
-    // Função para buscar os dados da API
     const fetchData = async () => {
       if (query.trim() === '') {
         setResults([]);
@@ -24,9 +23,7 @@ function SearchComponent() {
 
       try {
         const response = await fetch(`http://localhost:8080/api/word/search?q=${encodeURIComponent(query)}`);
-        if (!response.ok) {
-          throw new Error('Erro na requisição');
-        }
+        if (!response.ok) throw new Error('Erro na requisição');
         const data: SearchResult[] = await response.json();
         setResults(data);
       } catch (error) {
@@ -35,12 +32,7 @@ function SearchComponent() {
       }
     };
 
-    // Configura o debounce com um atraso de 300ms
-    const delayDebounceFn = setTimeout(() => {
-      fetchData();
-    }, 300);
-
-    // Limpa o timeout anterior se o efeito for chamado novamente antes do tempo
+    const delayDebounceFn = setTimeout(() => fetchData(), 300);
     return () => clearTimeout(delayDebounceFn);
   }, [query]);
 
@@ -57,8 +49,10 @@ function SearchComponent() {
       {results.length > 0 && (
         <ul className="mt-4 bg-white border border-gray-200 rounded-md shadow">
           {results.map((item) => (
-            <li key={item.id} className="rounded-xl px-4 py-2 hover:bg-gray-100 transition-colors duration-100 cursor-pointer">
-              <strong>{item.term}</strong>: {item.definition}
+            <li key={item.id} className="rounded-xl hover:bg-gray-100 transition-colors duration-100">
+              <Link href={`/word/${item.id}`} className="block px-4 py-2 cursor-pointer">
+                <strong>{item.term}</strong>: {item.definition}
+              </Link>
             </li>
           ))}
         </ul>

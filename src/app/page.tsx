@@ -48,7 +48,7 @@ export default function Home() {
           </Link>
           <Link href="https://github.com/seu-usuario" target="_blank" className="hover:underline hover:text-gray-100 transition-colors duration-100 flex gap-1">
             GitHub
-            <GitHubIcon />
+             <GitHubIcon /> 
           </Link>
         </div>
       </footer>
