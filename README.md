@@ -1,6 +1,7 @@
 # Internetes - Dicionário Moderno
 
-![image](https://github.com/user-attachments/assets/72fb1c8e-dcfe-454e-9644-b57a98b5075f)
+![image](![image](https://github.com/user-attachments/assets/5140b769-8293-4eee-bb7d-0d6f6e0ebc12)
+)
 ## 📖 Sobre
 
 O **Internetes** é uma aplicação web que funciona como um dicionário moderno, focada em termos populares da internet e das redes sociais. Seu objetivo é facilitar o entendimento de palavras e expressões comuns no vocabulário online, ajudando as pessoas a se comunicarem melhor em ambientes digitais.
