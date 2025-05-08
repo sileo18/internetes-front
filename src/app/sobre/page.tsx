@@ -1,23 +1,22 @@
 import { Container, Typography, Paper, Box, Avatar, Stack, Divider, Button, SvgIcon } from '@mui/material';
-import Link from 'next/link';
-// Ícone para a seção "Por Trás da Tela" - um exemplo genérico, você pode trocar
-import PersonIcon from '@mui/icons-material/Person'; // Ou um ícone que represente você/o projeto
-// Ícones para os CTAs
+// Não precisamos mais do Link do Next.js para este botão específico, mas pode ser usado por outros.
+// import Link from 'next/link';
+import PersonIcon from '@mui/icons-material/Person';
 import ShareIcon from '@mui/icons-material/Share';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; // Para "Adotar uma palavra"
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import CoffeeIcon from '@mui/icons-material/Coffee';
 
 export default function SobrePage() {
   return (
     <main className="flex-1 flex flex-col items-center py-8 px-4 sm:py-12 sm:px-6">
       <Container maxWidth="md">
-        <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, borderRadius: 3, overflow: 'hidden' /* Para cantos arredondados com gradiente */ }}>
-          {/* Opcional: Adicionar um toque de cor no topo do Paper */}
+        <Paper elevation={3} sx={{ p: { xs: 2, sm: 3, md: 4 }, borderRadius: 3, overflow: 'hidden' }}>
           <Box
             sx={{
               height: '8px',
-              background: 'linear-gradient(to right, #8B5CF6, #EC4899)', // Gradiente com suas cores
-              margin: '-32px -32px 24px -32px', // Ajuste conforme o padding 'p' do Paper
-              '@media (max-width:600px)': { // Ajuste para padding xs:2
+              background: 'linear-gradient(to right, #8B5CF6, #EC4899)',
+              margin: '-32px -32px 24px -32px',
+              '@media (max-width:600px)': {
                 margin: '-16px -16px 16px -16px',
               },
             }}
@@ -54,11 +53,11 @@ export default function SobrePage() {
               sx={{
                 width: { xs: 80, sm: 100 },
                 height: { xs: 80, sm: 100 },
-                bgcolor: 'secondary.main', // Usa a cor secundária (rosa) para o fundo do Avatar
-                fontSize: { xs: '2rem', sm: '2.5rem' } // Ajusta o tamanho do ícone dentro
+                bgcolor: 'secondary.main',
+                fontSize: { xs: '2rem', sm: '2.5rem' }
               }}
             >
-              <PersonIcon fontSize="inherit" /> {/* O ícone herda o tamanho */}
+              <PersonIcon fontSize="inherit" />
             </Avatar>
             <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
               <Typography variant="h5" component="h2" gutterBottom sx={{ fontWeight: 'medium' }}>
@@ -96,38 +95,61 @@ export default function SobrePage() {
               O Internetes é mais do que um dicionário; é uma comunidade em construção. Sua ajuda é super bem-vinda para mantermos o papo em dia e o conteúdo sempre fresquinho!
             </Typography>
             <Stack direction={{ xs: "column", sm: "row" }} spacing={2} justifyContent="center" alignItems="center">
+              {/* Botão Adotar Palavra (Interno - Em Desenvolvimento) */}
               <Button
                 variant="contained"
-                // color="secondary" // Se sua cor secundária for rosa
                 sx={{
-                  backgroundColor: '#EC4899', // Cor rosa
+                  backgroundColor: '#EC4899',
                   '&:hover': { backgroundColor: '#DB2777' },
                   borderRadius: '50px', px: 3, py: 1.5, textTransform: 'none', fontWeight:'bold',
-                  minWidth: '200px'
+                  minWidth: '220px', // Ajuste a largura conforme necessário
+                  opacity: 0.6,
+                  pointerEvents: 'none',
                 }}
                 size="large"
-                component={Link}
-                href="/adotar-palavra" // Mude para a rota correta se tiver uma página específica
+                disabled
                 startIcon={<FavoriteBorderIcon />}
               >
                 Adote uma Palavra
               </Button>
+
+              {/* Botão PixMeACoffee */}
               <Button
                 variant="outlined"
-                color="primary" // Usa a cor primária (lilás)
+                color="primary"
                 size="large"
-                // onClick={() => navigator.share ? navigator.share({ title: 'Internetes', text: 'Descubra o significado das gírias da internet!', url: window.location.origin }) : alert('Compartilhe este link: ' + window.location.origin)}
-                // O ideal é ter uma forma mais robusta de compartilhar ou um link para redes sociais
-                component="a" // Para poder usar href para um link de compartilhamento genérico ou para redes
-                href={`https://wa.me/?text=Olha%20que%20legal%20esse%20site%20para%20entender%20gírias%20da%20internet!%20${typeof window !== 'undefined' ? window.location.origin : 'https://internetes.com.br'}`} // Exemplo WhatsApp
+                component="a"
+                href="https://pixmeacoffee.vercel.app/adote-palavras"
                 target="_blank"
                 rel="noopener noreferrer"
-                sx={{ borderRadius: '50px', px:3, py: 1.5, textTransform: 'none', fontWeight:'bold', minWidth: '200px' }}
+                startIcon={<CoffeeIcon />} // Ícone de café
+                sx={{
+                  borderRadius: '50px', px:3, py: 1.5, textTransform: 'none', fontWeight:'medium',
+                  minWidth: '220px', // Ajuste a largura
+                }}
+              >
+                Apoie com Pix
+              </Button>
+            </Stack>
+            <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 1 }}>
+              (Funcionalidade "Adotar uma Palavra" em desenvolvimento)
+            </Typography>
+
+            {/* Botão Compartilhe o Site (mantido) */}
+            <Button
+                variant="outlined"
+                color="primary" // Pode ser uma cor diferente se quiser mais destaque
+                size="large"
+                component="a"
+                href={`https://wa.me/?text=Olha%20que%20legal%20esse%20site%20para%20entender%20gírias%20da%20internet!%20${typeof window !== 'undefined' ? window.location.origin : 'https://SEU_DOMINIO_AQUI.com'}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                sx={{ borderRadius: '50px', px:3, py: 1.5, textTransform: 'none', fontWeight:'bold', minWidth: '220px', mt:2 }} // Adicionando margem
                 startIcon={<ShareIcon />}
               >
                 Compartilhe o Site
-              </Button>
-            </Stack>
+            </Button>
+
              <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
                 E fique de olho! Em breve, você também poderá sugerir novas palavras diretamente por aqui.
             </Typography>

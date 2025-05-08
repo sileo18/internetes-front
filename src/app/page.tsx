@@ -10,6 +10,8 @@ import {
 } from '@mui/material';
 import MuiLink from '@mui/material/Link'; // Para estilizar links como MUI
 import SearchComponent from "./components/SearchComponent";
+import CoffeeIcon from '@mui/icons-material/Coffee';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 export default function Home() {
   return (
@@ -44,27 +46,43 @@ export default function Home() {
           </Box>
 
 
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              backgroundColor: '#EC4899', // Sua cor rosa
-              '&:hover': {
-                backgroundColor: '#db357f', // Rosa um pouco mais escuro para hover
-              },
-              borderRadius: '50px', // Botão bem arredondado
-              px: { xs: 3, sm: 5 }, // Padding horizontal responsivo
-              py: 1.5,
-              textTransform: 'none',
-              fontWeight: 'bold',
-              alignSelf: 'center', // Para centralizar o botão se o Paper for flex
-            }}
-            // Se o botão navegar para outra página, pode usar o componente Link do Next.js:
-            // component={Link}
-            // href="/adotar-palavra" // Exemplo de rota
-          >
-            Adotar uma palavra
-          </Button>
+          <Stack direction={{ xs: "column", sm: "row" }} spacing={2} justifyContent="center" alignItems="center">
+              {/* Botão Adotar Palavra (Interno - Em Desenvolvimento) */}
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: '#EC4899',
+                  '&:hover': { backgroundColor: '#DB2777' },
+                  borderRadius: '50px', px: 3, py: 1.5, textTransform: 'none', fontWeight:'bold',
+                  minWidth: '220px', // Ajuste a largura conforme necessário
+                  opacity: 0.6,
+                  pointerEvents: 'none',
+                }}
+                size="large"
+                disabled
+                startIcon={<FavoriteBorderIcon />}
+              >
+                Adote uma Palavra
+              </Button>
+
+              {/* Botão PixMeACoffee */}
+              <Button
+                variant="outlined"
+                color="primary"
+                size="large"
+                component="a"
+                href="https://pixmeacoffee.vercel.app/adote-palavras"
+                target="_blank"
+                rel="noopener noreferrer"
+                startIcon={<CoffeeIcon />} // Ícone de café
+                sx={{
+                  borderRadius: '50px', px:3, py: 1.5, textTransform: 'none', fontWeight:'medium',
+                  minWidth: '220px', // Ajuste a largura
+                }}
+              >
+                Apoie com Pix
+              </Button>
+            </Stack>
 
           <Typography variant="body2" color="text.secondary" sx={{ maxWidth: 'sm', alignSelf: 'center' }}>
             Suporte o Internetes adotando uma palavra!
