@@ -1,48 +1,115 @@
+// src/app/contato/page.tsx
+
 "use client";
 
 import { useState, FormEvent } from 'react';
-import { Container, Typography, Paper, Box, TextField, Button, CircularProgress, Alert, Stack, Divider, IconButton } from '@mui/material';
-import Link from 'next/link';
+import { Container, Typography, Paper, Box, TextField, Button, CircularProgress, Alert, Stack, Divider } from '@mui/material';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import EmailIcon from '@mui/icons-material/Email';
-import SendIcon from '@mui/icons-material/Send'; // Para o botão de enviar
+import SendIcon from '@mui/icons-material/Send';
+import axios, { AxiosError } from 'axios'; // Importar Axios e AxiosError
+
+// Interface para o estado dos erros de validação
+interface FormErrors {
+  name?: string;
+  email?: string;
+  subject?: string;
+  message?: string;
+}
 
 export default function ContatoPage() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    subject: '', // Assunto pode ser útil para filtrar os tipos de contato
+    subject: '',
     message: '',
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+  const [formErrors, setFormErrors] = useState<FormErrors>({}); // Estado para erros de validação
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    // Limpa o erro do campo específico ao digitar
+    if (formErrors[name as keyof FormErrors]) {
+      setFormErrors(prev => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  // Função de validação
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
+    if (!formData.name.trim()) {
+      errors.name = 'O nome é obrigatório.';
+    }
+    if (!formData.email.trim()) {
+      errors.email = 'O email é obrigatório.';
+    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+      errors.email = 'O formato do email é inválido.';
+    }
+    if (!formData.subject.trim()) {
+      errors.subject = 'O assunto é obrigatório.';
+    }
+    if (!formData.message.trim()) {
+      errors.message = 'A mensagem é obrigatória.';
+    } else if (formData.message.trim().length < 10) {
+      errors.message = 'A mensagem deve ter pelo menos 10 caracteres.';
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0; // Retorna true se não houver erros
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSubmitStatus(null);
+    setSubmitStatus(null); // Limpa status anterior
 
-    // --- INÍCIO DA LÓGICA DE ENVIO DO FORMULÁRIO (NECESSITA IMPLEMENTAÇÃO REAL) ---
-    // Exemplo: usando uma Server Action ou fetch para um endpoint de API
-    // Substitua esta simulação pela sua lógica real de envio de email.
+    if (!validateForm()) { // Executa a validação
+      return; // Interrompe o envio se houver erros
+    }
+
+    setIsSubmitting(true);
+
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
+
     try {
-      // Simulação de envio:
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      console.log('Dados do formulário para envio:', formData);
-      // Suponha que o envio foi bem-sucedido:
-      setSubmitStatus({ type: 'success', message: 'Mensagem enviada com sucesso! Agradeço o contato e responderei assim que possível. (Simulação)' });
+      const response = await axios.post(`${apiUrl}/api/contact/send`, formData);
+
+      // Axios lança um erro para status codes não-2xx por padrão,
+      // então não precisamos checar response.ok como no fetch.
+      // A resposta de sucesso da sua API (se houver) estará em response.data
+
+      setSubmitStatus({ type: 'success', message: response.data || 'Mensagem enviada com sucesso! Agradeço o contato e responderei assim que possível.' });
       setFormData({ name: '', email: '', subject: '', message: '' }); // Limpa o formulário
+      setFormErrors({}); // Limpa os erros de validação
     } catch (error: any) {
-      setSubmitStatus({ type: 'error', message: error.message || 'Ops! Algo deu errado ao tentar enviar sua mensagem. Por favor, tente novamente ou use um dos links abaixo.' });
+      let errorMessage = 'Ops! Algo deu errado ao tentar enviar sua mensagem. Por favor, tente novamente ou use um dos links abaixo.';
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response && axiosError.response.data) {
+          // Se a API retornar uma mensagem de erro no corpo (como string ou objeto com 'message')
+          if (typeof axiosError.response.data === 'string') {
+            errorMessage = axiosError.response.data;
+          } else if (typeof axiosError.response.data === 'object' && (axiosError.response.data as any).message) {
+            errorMessage = (axiosError.response.data as any).message;
+          } else {
+            errorMessage = `Erro da API: ${axiosError.response.status} - ${axiosError.response.statusText}`;
+          }
+        } else if (axiosError.request) {
+          errorMessage = 'Nenhuma resposta recebida da API. Verifique sua conexão ou o servidor.';
+        } else {
+          errorMessage = axiosError.message;
+        }
+      } else {
+        errorMessage = error.message || errorMessage;
+      }
+      setSubmitStatus({ type: 'error', message: errorMessage });
+      console.error("Erro no handleSubmit:", error);
     } finally {
       setIsSubmitting(false);
     }
-    // --- FIM DA LÓGICA DE ENVIO DO FORMULÁRIO ---
   };
 
   return (
@@ -66,7 +133,7 @@ export default function ContatoPage() {
           </Typography>
 
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-            <Stack spacing={3}>
+            <Stack spacing={2}> {/* Ajustado spacing para 2 para acomodar os helperTexts */}
               <TextField
                 required
                 fullWidth
@@ -78,6 +145,8 @@ export default function ContatoPage() {
                 onChange={handleChange}
                 disabled={isSubmitting}
                 variant="outlined"
+                error={!!formErrors.name} // Mostra estado de erro se houver erro para 'name'
+                helperText={formErrors.name} // Exibe a mensagem de erro
               />
               <TextField
                 required
@@ -91,6 +160,8 @@ export default function ContatoPage() {
                 onChange={handleChange}
                 disabled={isSubmitting}
                 variant="outlined"
+                error={!!formErrors.email}
+                helperText={formErrors.email}
               />
               <TextField
                 required
@@ -102,6 +173,8 @@ export default function ContatoPage() {
                 onChange={handleChange}
                 disabled={isSubmitting}
                 variant="outlined"
+                error={!!formErrors.subject}
+                helperText={formErrors.subject}
               />
               <TextField
                 required
@@ -110,11 +183,13 @@ export default function ContatoPage() {
                 label="Sua Mensagem"
                 name="message"
                 multiline
-                rows={5}
+                rows={4} // Reduzido um pouco para melhor visual com helperText
                 value={formData.message}
                 onChange={handleChange}
                 disabled={isSubmitting}
                 variant="outlined"
+                error={!!formErrors.message}
+                helperText={formErrors.message}
               />
               {submitStatus && (
                 <Alert severity={submitStatus.type} sx={{ mt: 1, mb:1 }}>
@@ -128,7 +203,7 @@ export default function ContatoPage() {
                 color="primary"
                 size="large"
                 startIcon={isSubmitting ? <CircularProgress size={20} color="inherit" /> : <SendIcon />}
-                sx={{ py: 1.5, textTransform: 'none', fontWeight: 'bold', borderRadius: '50px' }}
+                sx={{ py: 1.5, textTransform: 'none', fontWeight: 'bold', borderRadius: '50px', mt: 1 }}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Enviando...' : 'Enviar Mensagem'}
@@ -136,7 +211,7 @@ export default function ContatoPage() {
             </Stack>
           </Box>
 
-          <Divider sx={{ my: 5, fontSize:'0.9rem', color:'text.disabled' }}>OU CONECTE-SE DIRETAMENTE</Divider>
+          <Divider sx={{ my: 4, fontSize:'0.9rem', color:'text.disabled' }}>OU CONECTE-SE DIRETAMENTE</Divider> {/* Ajustado my para 4 */}
 
           <Box textAlign="center">
             <Typography variant="body1" color="text.secondary" paragraph sx={{ mb: 3 }}>
@@ -148,7 +223,7 @@ export default function ContatoPage() {
                 variant="outlined"
                 color="primary"
                 startIcon={<EmailIcon />}
-                href="lucastoledo358@gmail.com" // SUBSTITUA PELO SEU EMAIL
+                href="mailto:lucastoledo358@gmail.com"
                 sx={{ borderRadius: '50px', px:3, textTransform: 'none', flexGrow: 1, mb:1 }}
               >
                 lucastoledo358@gmail.com
@@ -157,7 +232,7 @@ export default function ContatoPage() {
                 variant="outlined"
                 color="primary"
                 startIcon={<GitHubIcon />}
-                href="https://github.com/sileo18/internetes-api" // SUBSTITUA PELO LINK CORRETO DO SEU PROJETO NO GITHUB
+                href="https://github.com/sileo18/internetes-api"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ borderRadius: '50px', px:3, textTransform: 'none', flexGrow: 1, mb:1 }}
@@ -168,7 +243,7 @@ export default function ContatoPage() {
                 variant="outlined"
                 color="primary"
                 startIcon={<LinkedInIcon />}
-                href="https://www.linkedin.com/in/lucas-antonio-toledo-sileo-b42593237/" // SUBSTITUA PELO SEU LINKEDIN
+                href="https://www.linkedin.com/in/lucas-antonio-toledo-sileo-b42593237/"
                 target="_blank"
                 rel="noopener noreferrer"
                 sx={{ borderRadius: '50px', px:3, textTransform: 'none', flexGrow: 1, mb:1 }}
@@ -177,7 +252,6 @@ export default function ContatoPage() {
               </Button>
             </Stack>
           </Box>
-
         </Paper>
       </Container>
     </main>

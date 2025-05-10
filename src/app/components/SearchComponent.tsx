@@ -28,6 +28,16 @@ function SearchComponent() {
         return;
       }
 
+      const MIN_QUERY_LENGTH = 2; // Defina o mínimo desejado
+      
+      if (query.trim().length < MIN_QUERY_LENGTH) {
+        setResults([]);
+        setError(null); // Limpa erro se a query for muito curta
+        // Poderia até definir uma mensagem específica: setError("Digite pelo menos X caracteres.");
+        setIsLoading(false); // Garante que o loading não fique ativo
+        return;
+      }
+
       setIsLoading(true);
       setError(null);
       try {
@@ -62,11 +72,11 @@ function SearchComponent() {
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         className="w-full px-4 py-3 border border-[#E0E0E0] rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[#8B5CF6] focus:border-[#8B5CF6] text-base transition-shadow"
-        // Adicionei um shadow-sm e um pouco mais de estilo no focus
+      // Adicionei um shadow-sm e um pouco mais de estilo no focus
       />
 
-      
-       {isLoading && <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">Carregando...</div>} 
+
+      {isLoading && <div className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400">Carregando...</div>}
 
 
       {/* A lista de resultados agora tem uma altura máxima e overflow-y: auto */}
@@ -82,8 +92,8 @@ function SearchComponent() {
                             /* Use o DevTools para ajustar a altura ideal para 4 itens visíveis. */
           "
           style={{ maxHeight: 'calc(4 * (2.5rem + 1px + 1px))' }} /* Exemplo mais preciso: 4 * (py-2 + borda) */
-                                                                /* 2.5rem (40px) é a altura aproximada de um py-2 com texto. */
-                                                                /* Ajuste 2.5rem conforme a altura real do seu <li> */
+        /* 2.5rem (40px) é a altura aproximada de um py-2 com texto. */
+        /* Ajuste 2.5rem conforme a altura real do seu <li> */
         >
           {results.map((item) => (
             <li key={item.id} className="border-b border-gray-100 last:border-b-0"> {/* Borda entre itens */}
