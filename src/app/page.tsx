@@ -12,6 +12,9 @@ import MuiLink from '@mui/material/Link'; // Para estilizar links como MUI
 import SearchComponent from "./components/SearchComponent";
 import CoffeeIcon from '@mui/icons-material/Coffee';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
+
+
 
 export default function Home() {
   return (
@@ -28,17 +31,21 @@ export default function Home() {
             gap: 4, // Espaçamento entre elementos do Stack (MUI v5+)
           }}
         >
-          <Typography
-            variant="h2"
-            component="h1"
-            sx={{
-              fontWeight: 'bold',
-              color: '#8B5CF6', // Sua cor lilás
-              fontSize: { xs: '2.5rem', sm: '3rem' } // Tamanho de fonte responsivo
-            }}
-          >
-            INTERNETÊS
-          </Typography>
+          <QuestionAnswerOutlinedIcon sx={{ fontSize: { xs: '2.2rem', sm: '2.7rem' }, color: '#8B5CF6', transform: 'scaleX(-1)' }} /> {/* Ícone */}
+            <Typography
+              variant="h2"
+              component="h1"              
+              sx={{
+                // fontFamily: "'Poppins', sans-serif", // Alternativa se não usar className
+                fontWeight: 800,
+                color: '#8B5CF6',
+                fontSize: { xs: '2.5rem', sm: '3rem' },
+                letterSpacing: '0.02em',
+                fontFamily: 'Poppins, sans-serif', // Usando Poppins para o título
+              }}
+            >
+              INTERNETÊS
+            </Typography>
 
           {/* Componente de busca. Idealmente, ele também usaria TextField do MUI por dentro */}
           <Box sx={{ width: '100%', maxWidth: '400px', alignSelf: 'center' }}>

@@ -2,8 +2,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background-rgb: 255, 255, 255; /* Branco para light mode */
+  --foreground-rgb: 23, 23, 23;   /* Quase preto para light mode */
+
+  /* Suas cores de marca, se quiser usá-las como variáveis CSS */
+  --brand-purple-light: #FAF5FF; /* Seu lilás mais claro */
+  --brand-purple-medium: #F3E8FF; /* Lilás intermediário */
+  --brand-purple-dark: #8B5CF6;  /* Seu roxo principal */
+  --brand-purple-darker: #7c3aed; /* Roxo um pouco mais escuro */
+
+  --dot-color-rgba: rgba(196, 181, 229, 0.2); /* Cor dos pontinhos */
 }
 
 @theme inline {
@@ -21,15 +29,51 @@
 }
 
 body {
-  background-color: #FAF5FF;
+  color: rgb(var(--foreground-rgb));
+  /* Fallback background color */
+  background-color: var(--brand-purple-light);
+
+  /* Camadas de background-image (de cima para baixo) */
   background-image:
-    /* Dot pattern */
-    radial-gradient(rgba(196, 181, 229, 0.2) 1px, transparent 1.5px), /* #C4B5E5 - a bit darker than FAF5FF */
-    /* Original radial gradient */
-    radial-gradient(circle, #FFFFFF 0%, #FAF5FF 70%, #F3E8FF 100%);
+    /* 1. Padrão de Pontinhos (em cima de tudo) */
+    radial-gradient(var(--dot-color-rgba) 1px, transparent 1.5px),
+
+    /* 2. Sobreposição de gradiente para tingir a imagem e o fundo base (opcional, mas ajuda a integrar) */
+    /* Este gradiente vai do seu roxo principal (semi-transparente) para um lilás claro (quase transparente) */
+    linear-gradient(to bottom, rgba(139, 92, 246, 0.3), rgba(250, 245, 255, 0.1) 70%, rgba(243, 232, 255, 0.05) 100%),
+
+    /* 3. Gradiente Radial (seu gradiente original, agora abaixo da sobreposição e pontinhos) */
+    /* Ajustei para ser um pouco mais sutil se for usar uma imagem de fundo */
+    radial-gradient(circle, rgba(255,255,255,0.7) 0%, var(--brand-purple-light) 60%, var(--brand-purple-medium) 100%),
+
+    /* 4. Imagem de Fundo (a camada mais ao fundo) */
+    url('/images/abstract-bg.jpg'); /* SUBSTITUA PELO CAMINHO DA SUA IMAGEM */
+
   background-size:
-    15px 15px, /* Size of the dot grid */
-    cover;    /* Main gradient covers the viewport */
-  /* The first image (dots) is layered on top of the second one (radial) */
+    15px 15px, /* Tamanho do padrão de pontinhos */
+    cover,     /* Tamanho da sobreposição de gradiente linear */
+    cover,     /* Tamanho do gradiente radial */
+    100% auto;     /* Tamanho da imagem de fundo */
+
+  background-position:
+    center center, /* Posição dos pontinhos */
+    center center, /* Posição da sobreposição de gradiente linear */
+    center center, /* Posição do gradiente radial */
+    center center;/* Posição da imagem de fundo */
+
+  background-repeat:
+    repeat,    /* Repetir os pontinhos */
+    no-repeat, /* Não repetir a sobreposição de gradiente linear */
+    no-repeat, /* Não repetir o gradiente radial */
+    repeat; /* Não repetir a imagem de fundo */
+
+  background-attachment:
+    fixed,     /* Pontinhos fixos */
+    fixed,     /* Sobreposição de gradiente linear fixa */
+    fixed,     /* Gradiente radial fixo */
+    fixed;     /* Imagem de fundo fixa (efeito parallax sutil) */
+
+  /* Garante que o conteúdo não seja selecionável se o fundo for muito complexo (opcional) */
+  /* user-select: none; */ /* Use com cautela, pode afetar a usabilidade */
 }
 

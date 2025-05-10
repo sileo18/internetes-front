@@ -4,12 +4,22 @@ import InfoIcon from '@mui/icons-material/Info';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import type { Metadata } from 'next';
 import './globals.css';
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google'; // Importar Poppins
+
+// Ícone de exemplo para o logo
+import QuestionAnswerOutlinedIcon from '@mui/icons-material/QuestionAnswerOutlined';
 
 const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter',
+  variable: '--font-inter', // Para CSS se necessário
+});
+
+const poppins = Poppins({ // Configuração da Poppins para o logo
+  subsets: ['latin'],
+  weight: ['700', '800'], // Pesos para o logo
+  display: 'swap',
+  variable: '--font-poppins-logo', // Variável CSS específica para a fonte do logo
 });
 
 export const metadata: Metadata = {
@@ -23,46 +33,50 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className={`${inter.className} antialiased`}> {/* Adicionado antialiased para suavização de fontes */}
+    // Adiciona a variável da Poppins ao html para poder usar em qualquer lugar
+    <html lang="pt-BR" className={`${inter.className} ${poppins.variable} antialiased`}>
       <body>
         <div className="min-h-screen text-[#1F2937] font-sans flex flex-col">
           <header
             className="
-              bg-gradient-to-r from-[#8B5CF6] to-[#7c3aed] /* Gradiente sutil */
+              bg-gradient-to-r from-[#8B5CF6] to-[#7c3aed]
               text-white
-              px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16 /* Ajuste no padding horizontal para ser mais consistente */
-              py-4
+              px-4 sm:px-6 md:px-8 lg:px-12 xl:px-16
+              py-3 sm:py-4 /* Ajuste no padding vertical */
               flex justify-between items-center
-              shadow-lg /* Sombra um pouco mais pronunciada */
-              sticky top-0 z-50 /* Deixa o header fixo no topo ao rolar */
+              shadow-lg
+              sticky top-0 z-50
             "
           >
             <Link
               href="/"
               className="
-                text-2xl sm:text-3xl font-bold /* Aumenta um pouco o logo em telas menores */
+                flex items-center gap-2 /* Alinha ícone e texto */
+                text-xl sm:text-2xl /* Tamanho ajustado para o header */
+                font-bold
                 hover:text-purple-200 transition-all duration-300 ease-in-out
-                hover:scale-105 /* Efeito de leve zoom no hover */
+                hover:scale-105
                 focus:outline-none focus:ring-2 focus:ring-purple-300 focus:ring-opacity-50 rounded
               "
+              style={{ fontFamily: 'var(--font-poppins-logo)' }} // Aplica a fonte Poppins via variável CSS
             >
+              <QuestionAnswerOutlinedIcon sx={{ fontSize: '1.1em' }} /> {/* Ícone um pouco maior que o texto, ajuste '1.1em' */}
               Internetes
             </Link>
-            <div className="text-right"> {/* Envolver o parágrafo em uma div para melhor controle se necessário */}
-              <p className="text-xs sm:text-sm leading-tight hidden sm:block text-purple-100"> {/* Cor mais suave para o slogan */}
+            <div className="text-right">
+              <p className="text-xs sm:text-sm leading-tight hidden sm:block text-purple-100">
                 Tudo o que você precisa<br />
                 para entender os jovens
               </p>
             </div>
           </header>
 
-          {/* O conteúdo da página será renderizado aqui */}
-          <div className="flex-1"> {/* Esta div garante que o footer seja empurrado para baixo corretamente */}
+          <div className="flex-1">
             {children}
           </div>
 
-          <footer className="bg-gradient-to-r from-[#8B5CF6] to-[#7c3aed] text-gray-200 py-6 mt-auto"> {/* Gradiente no footer também, e mais padding */}
-            <div className="container mx-auto px-4"> {/* Adicionado container para centralizar o conteúdo do footer */}
+          <footer className="bg-gradient-to-r from-[#8B5CF6] to-[#7c3aed] text-gray-200 py-6 mt-auto">
+            <div className="container mx-auto px-4">
               <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-8">
                 <Link href="/contato" className="hover:text-white transition-colors duration-200 flex items-center gap-1.5">
                   <MailIcon fontSize="small" /> Contato
